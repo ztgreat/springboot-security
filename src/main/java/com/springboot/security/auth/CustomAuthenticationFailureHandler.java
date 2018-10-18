@@ -1,0 +1,46 @@
+package com.springboot.security.auth;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.security.base.ResponseEntity;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class CustomAuthenticationFailureHandler implements org.springframework.security.web.authentication.AuthenticationFailureHandler{
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+
+        response.setContentType("application/json;charset=utf-8");
+        ResponseEntity<String> res = new ResponseEntity<>();
+        if (e instanceof BadCredentialsException ||
+                e instanceof UsernameNotFoundException) {
+            res.setFailure("账户名或者密码输入错误!");
+        } else if (e instanceof LockedException) {
+            res.setFailure("账户被锁定，请联系管理员!");
+        } else if (e instanceof CredentialsExpiredException) {
+            res.setFailure("密码过期，请联系管理员!");
+        } else if (e instanceof AccountExpiredException) {
+            res.setFailure("账户过期，请联系管理员!");
+        } else if (e instanceof DisabledException) {
+            res.setFailure("账户被禁用，请联系管理员!");
+        } else {
+            res.setFailure("登录失败!");
+        }
+        response.setStatus(401);
+        try {
+            ObjectMapper om = new ObjectMapper();
+            PrintWriter out = response.getWriter();
+            out.write(om.writeValueAsString(res));
+            out.flush();
+            out.close();
+        }catch (Exception ignore){
+
+        }
+    }
+}
