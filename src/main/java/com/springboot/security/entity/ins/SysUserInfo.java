@@ -14,27 +14,54 @@ public class SysUserInfo {
 	/****
 	 * 当前用户角色信息
 	 */
-	private List<String> currentAuthority;
+
+	private Integer id;
 
 	/**
-	 * 当前用户信息
+	 * 登录帐号
 	 */
-	private UserToken currentUser;
+	private String username;
 
-	public List<String> getCurrentAuthority() {
-		return currentAuthority;
+	/**
+	 * 用户昵称
+	 */
+	private String nickname;
+
+	/**
+	 * 邮箱
+	 */
+	private String email;
+
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCurrentAuthority(List<String> currentAuthority) {
-		this.currentAuthority = currentAuthority;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public UserToken getCurrentUser() {
-		return currentUser;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setCurrentUser(UserToken currentUser) {
-		this.currentUser = currentUser;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

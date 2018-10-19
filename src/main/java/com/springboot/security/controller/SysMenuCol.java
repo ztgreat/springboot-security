@@ -72,17 +72,15 @@ public class SysMenuCol {
 	@RequestMapping(value = "/getUserMenuTree")
 	@ResponseBody
 	public ResponseList<AuthMenuTreeIns> userTree() {
-
-
-		UserToken token = TokenManager.getToken();
 		ResponseList<AuthMenuTreeIns> res = new ResponseList<AuthMenuTreeIns>();
 		List<AuthMenuTreeIns> menus = null;
 		try {
+			UserToken token = TokenManager.getToken();
 			menus = sysMenuService.getMenuTreeByUserId(token.getId());
 			res.setData(menus);
 		} catch (Exception e) {
 			LoggerUtils.error(getClass(), "通过用户id 获取用户菜单树 失败:" + e.getMessage());
-			res.setFailure(e.getMessage());
+			res.setFailure("获取用户菜单树 失败");
 		}
 		return res;
 	}

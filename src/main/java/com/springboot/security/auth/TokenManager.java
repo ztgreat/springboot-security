@@ -1,17 +1,17 @@
 package com.springboot.security.auth;
 
 
-import org.springframework.security.authentication.jaas.SecurityContextLoginModule;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import sun.plugin.liveconnect.SecurityContextHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+/**
+ * 获取登录用户信息
+ * 注销登录
+ */
 public class TokenManager {
 
 	private  static SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
@@ -23,7 +23,6 @@ public class TokenManager {
 		UserToken token = (UserToken)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return token ;
 	}
-	
 
 	/**
 	 * 获取当前用户NAME

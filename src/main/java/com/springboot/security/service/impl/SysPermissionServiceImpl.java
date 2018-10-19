@@ -169,4 +169,22 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         return "删除成功";
     }
+
+    @Override
+    public List<SysPermission> getPermissionByCode(String code) {
+
+
+        if (StringUtils.isBlank(code)) {
+            code = null;
+        } else {
+            code = "%" + code.trim() + "%";
+        }
+
+        if (StringUtils.isNoneEmpty(code)) {
+            QueryWrapper<SysPermission>wrapper = new QueryWrapper<>();
+            wrapper .like(true,"code", code);
+            return sysPermissionMapper.selectList(wrapper);
+        }
+        return null;
+    }
 }

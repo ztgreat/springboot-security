@@ -1,4 +1,4 @@
-package com.springboot.security.auth;
+package com.springboot.security.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.security.entity.SysUser;
@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+/**
+ * 自定义的登录认证过滤器
+ * 同时支持:form表单和ajax 登录
+ */
+public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String contentType = request.getContentType();
         //attempt Authentication when Content-Type is json
         if(request.getContentType().equalsIgnoreCase(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 ||request.getContentType().equalsIgnoreCase(MediaType.APPLICATION_JSON_VALUE)){

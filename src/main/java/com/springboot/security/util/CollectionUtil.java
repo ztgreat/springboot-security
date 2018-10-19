@@ -1,8 +1,6 @@
 package com.springboot.security.util;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 集合运算
@@ -49,6 +47,33 @@ public class CollectionUtil {
 		Set<T> result = new HashSet<T>(ls);
 		result.removeAll(ls2);
 		return result;
+	}
+
+	public static <E> Set<E> asSet(E... elements) {
+		if (elements == null || elements.length == 0) {
+			return Collections.emptySet();
+		}
+
+		if (elements.length == 1) {
+			return Collections.singleton(elements[0]);
+		}
+
+		LinkedHashSet<E> set = new LinkedHashSet<E>(elements.length * 4 / 3 + 1);
+		Collections.addAll(set, elements);
+		return set;
+	}
+
+	public static <E> List<E> asList(E... elements) {
+		if (elements == null || elements.length == 0) {
+			return Collections.emptyList();
+		}
+
+		// Integer overflow does not occur when a large array is passed in because the list array already exists
+		return Arrays.asList(elements);
+	}
+
+	public static boolean isEmpty(Collection c) {
+		return c == null || c.isEmpty();
 	}
 
 }

@@ -1,18 +1,23 @@
 package com.springboot.security.configure;
 
-import com.springboot.security.auth.CustomAuthenticationFailureHandler;
-import com.springboot.security.auth.CustomAuthenticationFilter;
-import com.springboot.security.auth.CustomAuthenticationSuccessHandler;
-import com.springboot.security.auth.CustomAuthenticationProvider;
+import com.springboot.security.auth.CustomAuthenticationEntryPoint;
+import com.springboot.security.auth.login.CustomLgoinFailureHandler;
+import com.springboot.security.auth.login.CustomLoginAuthenticationFilter;
+import com.springboot.security.auth.login.CustomLoginSuccessHandler;
+import com.springboot.security.auth.url.UrlAccessDecisionManager;
+import com.springboot.security.auth.url.UrlMetadataSource;
 import com.springboot.security.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -26,9 +31,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     private UserDetailsServiceImpl userDetailsService;
 
 
+    @Autowired
+    UrlMetadataSource urlMetadataSource;
+    @Autowired
+    UrlAccessDecisionManager urlAccessDecisionManager;
+
+
     //自定义验证
 //    @Autowired
 //    private CustomAuthenticationProvider authenticationProvider;
+
+
+    /**
+     * 放行接口
+     * @param web
+     * @throws Exception
+     */
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers( "/api/test/**");
+    }
+
+
 
     /**
      * 匹配 "/" 路径，不需要权限即可访问
@@ -42,7 +66,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setSecurityMetadataSource(urlMetadataSource);
+                        o.setAccessDecisionManager(urlAccessDecisionManager);
+                        return o;
+                    }
+                })
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+//                .and()
+//                .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
+
 //                .and()
 //                .formLogin().loginPage("/api/login").permitAll()
 //                .failureHandler(new CustomAuthenticationFailureHandler())
@@ -55,13 +93,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     //注册自定义的UsernamePasswordAuthenticationFilter
     @Bean
-    CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
+    CustomLoginAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomLoginAuthenticationFilter filter = new CustomLoginAuthenticationFilter();
 
         filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
 
-        filter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
-        filter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(new CustomLgoinFailureHandler());
+        filter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
 
         //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
         filter.setAuthenticationManager(authenticationManager());

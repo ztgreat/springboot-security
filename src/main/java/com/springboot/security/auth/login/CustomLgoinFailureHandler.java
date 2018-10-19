@@ -1,4 +1,4 @@
-package com.springboot.security.auth;
+package com.springboot.security.auth.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.security.base.ResponseEntity;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CustomAuthenticationFailureHandler implements org.springframework.security.web.authentication.AuthenticationFailureHandler{
+public class CustomLgoinFailureHandler implements org.springframework.security.web.authentication.AuthenticationFailureHandler{
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
 

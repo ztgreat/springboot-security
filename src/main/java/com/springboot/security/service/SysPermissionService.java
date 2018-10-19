@@ -80,4 +80,6 @@ public interface SysPermissionService extends IService<SysPermission> {
     public boolean updatePermission(Integer roleId, List<Integer> permissionIds)throws RuntimeException;
 
     String deleteBatch(List<String> ids) throws  RuntimeException;
+
+    List<SysPermission> getPermissionByCode(String s);
 }

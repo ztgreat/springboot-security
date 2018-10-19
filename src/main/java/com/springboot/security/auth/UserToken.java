@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * 用户登录后返回实体
- * 
- *
+ * 登录用户信息
  */
 public class UserToken extends User {
 
