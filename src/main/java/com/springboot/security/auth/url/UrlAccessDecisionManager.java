@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
+
+/**
+ * 判断用户该请求是否具有权限
+ */
+
 @Component
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Override

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 获取登录用户信息
  * 注销登录
+ * @author ztgreat
  */
 public class TokenManager {
 
@@ -40,6 +41,11 @@ public class TokenManager {
 	}
 
 
+	/**
+	 * 退出登录
+	 * @param request
+	 * @param response
+	 */
 	public static void logout(HttpServletRequest request, HttpServletResponse response){
 		logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 	}

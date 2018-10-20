@@ -10,6 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * 参考shiro 中 WildcardPermission
+ */
 public class WildcardPermission implements Permission, Serializable {
 
     //TODO - JavaDoc methods

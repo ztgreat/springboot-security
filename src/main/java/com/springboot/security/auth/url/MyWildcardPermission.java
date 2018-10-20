@@ -3,6 +3,11 @@ package com.springboot.security.auth.url;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 复用 shiro 中的 WildcardPermission
+ * 做了匹配规则的修改
+ * @author  ztgreat
+ */
 public class MyWildcardPermission extends WildcardPermission{
 	
 	private static final long serialVersionUID = 1L;
@@ -64,6 +69,8 @@ public class MyWildcardPermission extends WildcardPermission{
 	}
 
 	/**
+	 * 匹配规则修改
+	 *
 	 * 集合a 是否包含target
 	 * @param a
 	 * @param target
@@ -87,6 +94,9 @@ public class MyWildcardPermission extends WildcardPermission{
 	}
 	
 	/**
+	 *
+	 * 匹配规则修改
+	 *
 	 * 集合a 是否全部包含集合b
 	 * @param a
 	 * @param b

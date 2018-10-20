@@ -16,6 +16,8 @@ import java.io.InputStream;
 /**
  * 自定义的登录认证过滤器
  * 同时支持:form表单和ajax 登录
+ * 如果是json提交,那么就单独处理,否则移交至父类处理
+ * 默认是处理 form格式
  */
 public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 

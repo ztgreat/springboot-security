@@ -18,10 +18,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+
+/**
+ * url资源权限处理
+ *
+ * 获取当前url需要的权限
+ *
+ * 这部分可以利用缓存
+ */
+
 @Component
 public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource {
 
 
+    /**
+     * 请求前缀,类似：/api/test/hello
+     */
     private static  String urlPrefix="/api";
 
     protected static final String PART_DIVIDER_TOKEN = ":";
@@ -32,6 +44,8 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) {
 
+
+        //判断用户是否登录，如果没有登录，则需要登录权限
         UserToken token=null;
         try {
             token=TokenManager.getToken();
@@ -44,7 +58,11 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
         }
 
 
+        //请求url
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
+
+        //处理url
+        //例如： /api/menu/getMenu ->  menu:getMenu
         String url =resoverUrl(((FilterInvocation) o).getRequest().getContextPath(),requestUrl);
 
         String []urlArray=url.split(PART_DIVIDER_TOKEN);
