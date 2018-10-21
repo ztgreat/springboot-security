@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.security.entity.SysPermission;
 import com.springboot.security.entity.ins.PermissionTreeIns;
+import com.springboot.security.entity.ins.SysPermissionIns;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -39,4 +40,5 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     public List<SysPermission>getPermissionByRoleId(@Param("roleId")Integer roleId);
 
+    List<SysPermissionIns> getPermissionAndRoleByCode(@Param("code")String code);
 }

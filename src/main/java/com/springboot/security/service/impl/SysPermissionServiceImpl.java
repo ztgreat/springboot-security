@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.springboot.security.entity.SysPermission;
 import com.springboot.security.entity.SysRolePermission;
 import com.springboot.security.entity.ins.PermissionTreeIns;
+import com.springboot.security.entity.ins.SysPermissionIns;
 import com.springboot.security.mapper.SysPermissionMapper;
 import com.springboot.security.mapper.SysRolePermissionMapper;
 import com.springboot.security.service.SysPermissionService;
@@ -171,20 +172,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<SysPermission> getPermissionByCode(String code) {
+    public List<SysPermissionIns> getPermissionAndRoleByCode(String code) {
 
-
-        if (StringUtils.isBlank(code)) {
-            code = null;
-        } else {
-            code = "%" + code.trim() + "%";
-        }
-
-        if (StringUtils.isNoneEmpty(code)) {
-            QueryWrapper<SysPermission>wrapper = new QueryWrapper<>();
-            wrapper .like(true,"code", code);
-            return sysPermissionMapper.selectList(wrapper);
-        }
-        return null;
+        return sysPermissionMapper.getPermissionAndRoleByCode(code);
     }
 }

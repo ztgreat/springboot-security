@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.security.entity.SysPermission;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.springboot.security.entity.ins.PermissionTreeIns;
+import com.springboot.security.entity.ins.SysPermissionIns;
 
 import java.util.List;
 
@@ -60,16 +61,16 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param parentId 指定根菜单
      * @return
      */
-    public IPage<PermissionTreeIns> getPermissionTree(int pageNum, int pageSize, Integer parentId);
+    IPage<PermissionTreeIns> getPermissionTree(int pageNum, int pageSize, Integer parentId);
 
-    public List<PermissionTreeIns> getPermissionTree(Integer parentId);
+    List<PermissionTreeIns> getPermissionTree(Integer parentId);
 
     /**
      * 查询某个角色的权限集合
      * @param roleId
      * @return
      */
-    public List<SysPermission>getPermissionByRoleId(Integer roleId);
+    List<SysPermission>getPermissionByRoleId(Integer roleId);
 
     /**
      * 更新某个角色的权限
@@ -77,9 +78,14 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param permissionIds
      * @return
      */
-    public boolean updatePermission(Integer roleId, List<Integer> permissionIds)throws RuntimeException;
+    boolean updatePermission(Integer roleId, List<Integer> permissionIds)throws RuntimeException;
 
     String deleteBatch(List<String> ids) throws  RuntimeException;
 
-    List<SysPermission> getPermissionByCode(String s);
+    /**
+     * 根据资源code 模糊匹配相关资源，以及相关资源的角色
+     * @param code
+     * @return
+     */
+    List<SysPermissionIns> getPermissionAndRoleByCode(String code);
 }

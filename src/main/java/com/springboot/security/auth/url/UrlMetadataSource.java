@@ -6,6 +6,7 @@ import com.springboot.security.auth.url.MyWildcardPermission;
 import com.springboot.security.auth.url.Permission;
 import com.springboot.security.entity.SysPermission;
 import com.springboot.security.entity.SysRole;
+import com.springboot.security.entity.ins.SysPermissionIns;
 import com.springboot.security.service.SysPermissionService;
 import com.springboot.security.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -70,12 +71,12 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
         if(urlArray!=null && urlArray.length>0){
 
             //获取该访问相关的资源
-            List<SysPermission> allPermissions = permissionService.getPermissionByCode(urlArray[0]);
+            List<SysPermissionIns> allPermissions = permissionService.getPermissionAndRoleByCode(urlArray[0]);
 
             //权限字符串
             List<String>permissionStr = new ArrayList<>();
 
-            for(SysPermission permission:allPermissions){
+            for(SysPermissionIns permission:allPermissions){
                 permissionStr.add(permission.getCode());
             }
 
@@ -84,33 +85,37 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
 
 
             //构造需要对比的权限字符集合
-            Collection<Permission> resolvedPermission = getPermissions(null,permissionStr);
+            Collection<MyWildcardPermission> resolvedPermission = getPermissions(allPermissions);
 
             if (resolvedPermission != null && !resolvedPermission.isEmpty()) {
-                for (Permission perm : resolvedPermission) {
+
+                ArrayList<String>rolesArray = new ArrayList<>();
+
+                for (MyWildcardPermission perm : resolvedPermission) {
                     if (perm.implies(requestUrlPermission)) {
 
                         //匹配成功
-
-                        //根据permission 查询角色
-                        List<SysRole> roles=new ArrayList<>();
-                        int size = roles.size();
-                        String[] values = new String[size];
-                        for (int i = 0; i < size; i++) {
-                            values[i] = roles.get(i).getCode();
+                        //查询角色
+                        List<SysRole> roles=perm.getRoles();
+                        for (int i = 0; i < perm.getRoles().size(); i++) {
+                            rolesArray.add(roles.get(i).getCode());
                         }
-                        return SecurityConfig.createList("ROLE_LOGIN");
                     }
+                }
+
+                if(rolesArray.size()>0){
+                    String []temp = new String[rolesArray.size()];
+                    for(int i=0;i<rolesArray.size();i++){
+                        temp[i]=rolesArray.get(i);
+                    }
+                    return SecurityConfig.createList(temp);
                 }
             }
 
         }
 
-
-
-
-        //没有匹配上的资源，都是登录访问
-        return SecurityConfig.createList("ROLE_LOGIN");
+        //没有匹配上的资源，拒绝访问
+        return SecurityConfig.createList("ROLE_Denied");
     }
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
@@ -129,6 +134,13 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
      * @return
      */
     public String resoverUrl(String basePath,String url){
+
+
+        if(url!=null){
+            int param = url.indexOf("?");
+            url = url.substring(0,param);
+        }
+
         if (null != url && url.startsWith(basePath)) {
             url = url.replaceFirst(basePath, "");
         }
@@ -157,16 +169,14 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
 
     /**
      * 构造url 权限字符串
-     * @param perms
+     * @param sysPermissions
      * @return
      */
-    protected Collection<Permission> getPermissions(Collection<Permission> perms,Collection<String> stringPerms) {
-        Set<Permission> permissions = new HashSet<Permission>();
+    protected Collection<MyWildcardPermission> getPermissions(Collection<SysPermissionIns> sysPermissions) {
+        Set<MyWildcardPermission> permissions = new HashSet<MyWildcardPermission>();
 
-        if (!CollectionUtil.isEmpty(perms)) {
-            permissions.addAll(perms);
-        }
-        perms = resolvePermissions(stringPerms);
+
+        Collection<MyWildcardPermission>perms = resolvePermissions(sysPermissions);
         if (!CollectionUtil.isEmpty(perms)) {
             permissions.addAll(perms);
         }
@@ -180,15 +190,17 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
 
     /**
      * 构造url 权限字符串
-     * @param stringPerms
+     * @param sysPermissions
      * @return
      */
-    private Collection<Permission> resolvePermissions(Collection<String> stringPerms) {
-        Collection<Permission> perms = Collections.emptySet();
-        if (!CollectionUtil.isEmpty(stringPerms)) {
-            perms = new LinkedHashSet<Permission>(stringPerms.size());
-            for (String strPermission : stringPerms) {
-                Permission permission = new MyWildcardPermission(strPermission);
+    private Collection<MyWildcardPermission> resolvePermissions(Collection<SysPermissionIns> sysPermissions) {
+        Collection<MyWildcardPermission> perms = Collections.emptySet();
+        if (!CollectionUtil.isEmpty(sysPermissions)) {
+            perms = new LinkedHashSet<MyWildcardPermission>(sysPermissions.size());
+            for (SysPermissionIns sysPermissionIns : sysPermissions) {
+                MyWildcardPermission permission = new MyWildcardPermission(sysPermissionIns.getCode());
+
+                permission.setRoles(sysPermissionIns.getRoles());
                 perms.add(permission);
             }
         }

@@ -13,6 +13,22 @@
         <result column="parent_id" property="parentId" />
     </resultMap>
 
+
+    <resultMap id="RoleResultMap" type="com.springboot.security.entity.ins.SysPermissionIns">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="status" property="status" />
+        <result column="descr" property="descr" />
+        <result column="level" property="level" />
+        <result column="parent_id" property="parentId" />
+
+        <collection property="roles" column="id" select="getRolesByPermission" />
+
+    </resultMap>
+
+
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, code, status, descr, level, parent_id
@@ -52,5 +68,32 @@
         left join sys_permission sp on sp.id=srp.perm_id
         WHERE sr.id=#{roleId}
     </select>
+
+
+
+
+    <!--根据code获取相关资源-->
+    <select id="getPermissionAndRoleByCode"  resultMap="RoleResultMap">
+
+        SELECT * from sys_permission sy WHERE sy.`code` LIKE CONCAT(#{code},'%')
+
+
+    </select>
+
+
+
+    <!--根据资源权限获取角色-->
+    <select id="getRolesByPermission"  resultMap="com.springboot.security.mapper.SysRoleMapper.BaseResultMap">
+
+        select sr.* from (SELECT * from sys_role_permission srp  WHERE srp.perm_id =#{id}) as temp
+
+        LEFT JOIN sys_role sr on temp.role_id = sr.id
+
+
+    </select>
+
+
+
+
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.springboot.security.auth.url;
 
+import com.springboot.security.entity.SysRole;
+
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +13,9 @@ import java.util.Set;
 public class MyWildcardPermission extends WildcardPermission{
 	
 	private static final long serialVersionUID = 1L;
-	
+
+	private List<SysRole>roles;
+
     protected MyWildcardPermission() {
     }
 
@@ -22,6 +26,14 @@ public class MyWildcardPermission extends WildcardPermission{
     public MyWildcardPermission(String wildcardString, boolean caseSensitive) {
     	super.setParts(wildcardString, caseSensitive);
     }
+
+	public List<SysRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<SysRole> roles) {
+		this.roles = roles;
+	}
 
 	@Override
 	public boolean implies(Permission p) {
