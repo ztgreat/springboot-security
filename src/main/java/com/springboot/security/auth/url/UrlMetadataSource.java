@@ -138,7 +138,9 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
 
         if(url!=null){
             int param = url.indexOf("?");
-            url = url.substring(0,param);
+            if(param>-1){
+                url = url.substring(0,param);
+            }
         }
 
         if (null != url && url.startsWith(basePath)) {
