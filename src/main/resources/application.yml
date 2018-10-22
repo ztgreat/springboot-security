@@ -1,5 +1,12 @@
 server:
   port: 8080
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        name: ant-manager
+    # 8小时   8*60*60 =28800(s)
+    timeout: 28800
 
 spring:
        # jdbc
@@ -14,20 +21,6 @@ spring:
          host: localhost
          port: 6379
          password:
-         jedis:
-           pool:
-             max-active: 8
-             max-wait: -1
-             max-idle: 8
-             min-idle: 0
-
-       shiro:
-         # 8小时   8*60*60*1000 =28800000
-         # 1分钟   1*60*1000 = 60000
-         globalSessionTimeout: 28800000
-
-         cookieName: "default_manager"
-
 
 # mybatis plus
 mybatis-plus:

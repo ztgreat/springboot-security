@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50615
 File Encoding         : 65001
 
-Date: 2018-10-17 18:26:53
+Date: 2018-10-22 10:43:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -119,7 +119,7 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', 'ROLE_ADMIN', '系统管理员', '1');
 INSERT INTO `sys_role` VALUES ('2', 'ROLE_USER', '普通用户', '1');
-INSERT INTO `sys_role` VALUES ('20', '000003', '查阅用户', '1');
+INSERT INTO `sys_role` VALUES ('20', 'ROLE_QUERY', '查阅用户', '1');
 INSERT INTO `sys_role` VALUES ('29', 'ROLE_GUEST', '无查询权限', '1');
 
 -- ----------------------------
