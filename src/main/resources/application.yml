@@ -4,9 +4,11 @@ server:
     session:
       cookie:
         http-only: true
-        name: ant-manager
-    # 8小时   8*60*60 =28800(s)
-    timeout: 28800
+        name: spring-security-manager
+      # 8小时   8*60*60 =28800(s)
+      # session 有效时间配置在 HttpSessionConfig 文件中
+      # 这里没有生效,暂未找到原因
+      timeout: 28800
 
 spring:
        # jdbc
