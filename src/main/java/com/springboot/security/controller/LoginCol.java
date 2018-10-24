@@ -22,27 +22,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class LoginCol {
-	@Autowired
-	private SysUserService sysUserService;
-	@Autowired
-	private SysRoleService sysRoleService;
-
-
-	// 登录
-//	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
-//	@ResponseBody
-//	public ResponseEntity<UserToken> doLogin(@RequestBody SysUser user, Boolean rememberMe, String captcha,
-//											 HttpServletRequest request, RedirectAttributes redirect) {
-//		ResponseEntity<UserToken> res = new ResponseEntity<UserToken>();
-//
-//		return res;
-//	}
 
 	@RequestMapping(value = "/api/logout", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
 		ResponseEntity<String> res = new ResponseEntity<String>();
-		TokenManager.logout(request,response);
+		try{
+			TokenManager.logout(request,response);
+		}catch (Exception ignore){
+
+		}
 		res.setSuccess("登出成功");
 		return res;
 	}

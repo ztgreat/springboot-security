@@ -66,7 +66,7 @@ public class AutoGeneratorHelper {
         });
 
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUrl("jdbc:mysql://localhost:3306/shiro?useUnicode=true&characterEncoding=utf-8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/authority?useUnicode=true&characterEncoding=utf-8");
         dsc.setUsername("root");
         dsc.setPassword("root");
         mpg.setDataSource(dsc);

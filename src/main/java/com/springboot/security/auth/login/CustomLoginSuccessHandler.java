@@ -25,16 +25,20 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         /**
          * 登录成功,将部分用户登录信息返回给前端
          */
-
         response.setContentType("application/json;charset=utf-8");
+
         SysUserInfo su = new SysUserInfo();
         UserToken token = TokenManager.getToken();
         su.setUsername(token.getUsername());
         su.setNickname(token.getNickname());
         su.setId(token.getId());
+        su.setEmail(token.getEmail());
+        su.setLastLoginTime(token.getLastLoginTime());
+
         ResponseEntity<SysUserInfo>res= new ResponseEntity<>();
         res.setSuccess("登录成功");
         res.setData(su);
+
         ObjectMapper om = new ObjectMapper();
         PrintWriter out = response.getWriter();
         out.write(om.writeValueAsString(res));

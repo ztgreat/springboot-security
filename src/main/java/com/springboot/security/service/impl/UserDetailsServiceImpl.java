@@ -43,6 +43,9 @@ public class UserDetailsServiceImpl implements org.springframework.security.core
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = createAuthorities(sr);
         UserToken userInfo = new UserToken(user.getUsername(), user.getPassword(), simpleGrantedAuthorities);
         userInfo.setId(user.getId());
+        userInfo.setNickname(user.getNickname());
+        userInfo.setEmail(user.getEmail());
+        userInfo.setLastLoginTime(user.getLastLoginTime());
         return userInfo;
     }
 

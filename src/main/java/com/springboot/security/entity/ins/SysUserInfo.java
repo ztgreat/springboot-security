@@ -2,6 +2,7 @@ package com.springboot.security.entity.ins;
 
 import com.springboot.security.auth.UserToken;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +32,11 @@ public class SysUserInfo {
 	 * 邮箱
 	 */
 	private String email;
+
+	/**
+	 * 最后登录时间
+	 */
+	private Date lastLoginTime;
 
 
 	public Integer getId() {
@@ -63,5 +69,13 @@ public class SysUserInfo {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 }

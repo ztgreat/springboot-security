@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * 登录用户信息
@@ -18,6 +19,18 @@ public class UserToken extends User {
 	 * 用户昵称
 	 */
 	private String nickname;
+
+	/**
+	 * 邮箱
+	 */
+	private String email;
+
+	/**
+	 * 最后登录时间
+	 */
+	private Date lastLoginTime;
+
+
 
 	public UserToken() {
 		super(null,null,null);
@@ -46,5 +59,21 @@ public class UserToken extends User {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 }

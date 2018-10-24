@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 日志工具
  * 
- * @author Administrator
+ * @author ztgreat
  *
  */
 public class LoggerUtils {
