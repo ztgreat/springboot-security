@@ -53,25 +53,6 @@ public class SysUserCol {
 		}
 	}
 
-	// 登录
-	@RequestMapping(value = "/getInfo")
-	@ResponseBody
-	public ResponseEntity<SysUserInfo> getInfo() {
-		ResponseEntity<SysUserInfo> res = new ResponseEntity<SysUserInfo>();
-		SysUserInfo su = new SysUserInfo();
-		UserToken token = TokenManager.getToken();
-		try {
-//			List<String> userRoles = sysRoleService.getRoleStrByUserId(token.getId());
-			su.setUsername(token.getUsername());
-			su.setNickname(token.getNickname());
-			su.setId(token.getId());
-		} catch (Exception e) {
-			LoggerUtils.error(getClass(), "获取登录用户信息失败:" + e.getMessage());
-		}
-		res.setData(su);
-		return res;
-	}
-
 
 	@RequestMapping(value = "saveOrUpdate", method = RequestMethod.POST)
 	@ResponseBody
@@ -126,20 +107,19 @@ public class SysUserCol {
 	}
 
 	/**
-	 * 获取用户信息
-	 * 
-	 * @param id
+	 * 获取登录用户信息
 	 * @return
 	 */
-	@RequestMapping(value = "/query/{id}")
+	@RequestMapping(value = "/query")
 	@ResponseBody
-	public ResponseEntity<SysUser> query(@PathVariable(value = "id") Integer id) {
-		ResponseEntity<SysUser> res = new ResponseEntity<SysUser>();
+	public ResponseEntity<SysUserInfo> query() {
+		ResponseEntity<SysUserInfo> res = new ResponseEntity<SysUserInfo>();
 		try {
-			SysUser user = sysUserService.getById(id);
-			res.setData(user);
-			res.setSuccess();
+			UserToken token =TokenManager.getToken();
+			SysUserInfo su = new SysUserInfo(token);
+			res.setData(su);
 		} catch (Exception e) {
+			LoggerUtils.error(getClass(),"获取用户登录信息失败");
 			res.setFailure(CommonConstant.Message.OPTION_FAILURE);
 		}
 		return res;

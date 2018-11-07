@@ -24,6 +24,10 @@ spring:
          port: 6379
          password:
 
+       security:
+         urlPrefix: "/api"
+         urlLogout: "/api/logout"
+
 # mybatis plus
 mybatis-plus:
          config-location: classpath:mybatis/mybatis-config.xml

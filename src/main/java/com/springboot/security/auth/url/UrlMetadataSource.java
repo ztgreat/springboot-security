@@ -11,6 +11,7 @@ import com.springboot.security.service.SysPermissionService;
 import com.springboot.security.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -30,18 +31,40 @@ import java.util.*;
  */
 
 @Component
+
 public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource {
 
 
     /**
      * 请求前缀,类似：/api/test/hello
      */
-    private static  String urlPrefix="/api";
+    private static  String urlPrefix;
+
+    /**
+     * 退出登录url
+     */
+    private static  String urlLogout;
 
     protected static final String PART_DIVIDER_TOKEN = ":";
 
     @Autowired
     private SysPermissionService permissionService;
+
+    public static String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public static void setUrlPrefix(String urlPrefix) {
+        UrlMetadataSource.urlPrefix = urlPrefix;
+    }
+
+    public static String getUrlLogout() {
+        return urlLogout;
+    }
+
+    public static void setUrlLogout(String urlLogout) {
+        UrlMetadataSource.urlLogout = urlLogout;
+    }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) {
@@ -59,9 +82,12 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
             return SecurityConfig.createList("ROLE_LOGIN");
         }
 
-
         //请求url
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
+
+        if(this.urlLogout !=null && requestUrl.startsWith(this.urlLogout)){
+            return SecurityConfig.createList("ROLE_LOGIN");
+        }
 
         //处理url
         //例如： /api/menu/getMenu ->  menu:getMenu
@@ -149,7 +175,7 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
         }
 
 
-        if(url.startsWith(this.urlPrefix)){
+        if(this.urlPrefix !=null && url.startsWith(this.urlPrefix)){
             url = url.replaceFirst(this.urlPrefix, "");
         }
 

@@ -1,20 +1,20 @@
 package com.springboot.security.entity.ins;
 
 import com.springboot.security.auth.UserToken;
+import com.springboot.security.entity.SysRole;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 用户登录后返回实体
- * 
- * @author Administrator
+ *
+ * @author ztgreat
  *
  */
 public class SysUserInfo {
-	/****
-	 * 当前用户角色信息
-	 */
 
 	private Integer id;
 
@@ -34,10 +34,38 @@ public class SysUserInfo {
 	private String email;
 
 	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+
+	/**
 	 * 最后登录时间
 	 */
 	private Date lastLoginTime;
 
+
+	/****
+	 * 当前用户角色信息
+	 */
+	private List<String> currentAuthority;
+
+	public SysUserInfo() {
+	}
+
+	public SysUserInfo(UserToken token) {
+
+		List<String> userRole = new ArrayList<String>();
+		for (SysRole role : token.getRoles()) {
+			userRole.add(role.getCode());
+		}
+		this.setId(token.getId());
+		this.setNickname(token.getNickname());
+		this.setUsername(token.getUsername());
+		this.setEmail(token.getEmail());
+		this.setCreateTime(token.getCreateTime());
+		this.setLastLoginTime(token.getLastLoginTime());
+		this.setCurrentAuthority(userRole);
+	}
 
 	public Integer getId() {
 		return id;
@@ -69,6 +97,22 @@ public class SysUserInfo {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<String> getCurrentAuthority() {
+		return currentAuthority;
+	}
+
+	public void setCurrentAuthority(List<String> currentAuthority) {
+		this.currentAuthority = currentAuthority;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public Date getLastLoginTime() {

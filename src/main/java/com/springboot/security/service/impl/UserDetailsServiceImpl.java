@@ -26,7 +26,6 @@ public class UserDetailsServiceImpl implements org.springframework.security.core
     private SysRoleService sysRoleService;
 
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser user = userService.getUserByUserName(username);
@@ -41,12 +40,16 @@ public class UserDetailsServiceImpl implements org.springframework.security.core
             sr.add(sysRole.getCode());
         }
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = createAuthorities(sr);
-        UserToken userInfo = new UserToken(user.getUsername(), user.getPassword(), simpleGrantedAuthorities);
-        userInfo.setId(user.getId());
-        userInfo.setNickname(user.getNickname());
-        userInfo.setEmail(user.getEmail());
-        userInfo.setLastLoginTime(user.getLastLoginTime());
-        return userInfo;
+        UserToken userToken = new UserToken(user.getUsername(), user.getPassword(), simpleGrantedAuthorities);
+        userToken.setId(user.getId());
+        userToken.setUsername(user.getUsername());
+        userToken.setNickname(user.getNickname());
+        userToken.setEmail(user.getEmail());
+        userToken.setCreateTime(user.getCreateTime());
+        userToken.setLastLoginTime(user.getLastLoginTime());
+        //单独存一份角色信息
+        userToken.setRoles(roles);
+        return userToken;
     }
 
     /**

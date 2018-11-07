@@ -1,11 +1,13 @@
 package com.springboot.security.auth;
 
+import com.springboot.security.entity.SysRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 登录用户信息
@@ -14,6 +16,11 @@ public class UserToken extends User {
 
 
 	private Integer id;
+
+	/**
+	 * 登录帐号
+	 */
+	private String username;
 
 	/**
 	 * 用户昵称
@@ -26,9 +33,19 @@ public class UserToken extends User {
 	private String email;
 
 	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+
+	/**
 	 * 最后登录时间
 	 */
 	private Date lastLoginTime;
+
+	/****
+	 * 当前用户角色信息
+	 */
+	private List<SysRole> roles;
 
 
 
@@ -75,5 +92,30 @@ public class UserToken extends User {
 
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public List<SysRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<SysRole> roles) {
+		this.roles = roles;
 	}
 }

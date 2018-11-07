@@ -28,9 +28,10 @@ public class LoginCol {
 	public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
 		ResponseEntity<String> res = new ResponseEntity<String>();
 		try{
+
 			TokenManager.logout(request,response);
 		}catch (Exception ignore){
-
+			return  res;
 		}
 		res.setSuccess("登出成功");
 		return res;

@@ -9,6 +9,7 @@ import com.springboot.security.auth.url.UrlMetadataSource;
 import com.springboot.security.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,8 +24,35 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configurable
 @EnableWebSecurity
+@ConfigurationProperties(prefix = "spring.security")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
+
+    /**
+     * 请求前缀,类似：/api/test/hello
+     */
+    private  String urlPrefix;
+
+    /**
+     * 退出登录url
+     */
+    private  String urlLogout;
+
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+    }
+
+    public String getUrlLogout() {
+        return urlLogout;
+    }
+
+    public void setUrlLogout(String urlLogout) {
+        this.urlLogout = urlLogout;
+    }
 
     //自定义用户服务
     @Autowired
@@ -49,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
+        //拦截忽略的地方,认证信息不会注入
         web.ignoring().antMatchers( "/api/test/**");
     }
 
@@ -63,6 +92,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        this.urlMetadataSource.setUrlPrefix(this.getUrlPrefix());
+        this.urlMetadataSource.setUrlLogout(this.getUrlLogout());
+
         http
                 .csrf().disable()
                 .authorizeRequests()
@@ -78,15 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-//                .and()
-//                .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
 
-//                .and()
-//                .formLogin().loginPage("/api/login").permitAll()
-//                .failureHandler(new CustomAuthenticationFailureHandler())
-//                .successHandler(new CustomAuthenticationSuccessHandler());
-//                .and()
-//                .logout().logoutUrl("/api/logout").permitAll();
 
         http.addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

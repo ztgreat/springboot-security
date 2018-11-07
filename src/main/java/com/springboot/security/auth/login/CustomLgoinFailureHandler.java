@@ -37,14 +37,10 @@ public class CustomLgoinFailureHandler implements org.springframework.security.w
             res.setFailure("登录失败!");
         }
         response.setStatus(401);
-        try {
-            ObjectMapper om = new ObjectMapper();
-            PrintWriter out = response.getWriter();
-            out.write(om.writeValueAsString(res));
-            out.flush();
-            out.close();
-        }catch (Exception ignore){
-
-        }
+        ObjectMapper om = new ObjectMapper();
+        PrintWriter out = response.getWriter();
+        out.write(om.writeValueAsString(res));
+        out.flush();
+        out.close();
     }
 }
