@@ -1,9 +1,42 @@
+
 server:
   port: 8080
+  servlet:
+    session:
+      cookie:
+        name: spring-security-manager
+        http-only: true
+      # session 有效时间配置在 HttpSessionConfig 文件中
+      # 这里没有生效,暂未找到原因
+      # 8小时   8*60*60 =28800(s)
+      timeout: 28800
 
 spring:
-  redis:
-    host: 127.0.0.1
-    database: 0
+       # jdbc
+       datasource:
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/authority?serverTimezone=GMT&useUnicode=true&characterEncoding=utf-8
+          username: root
+          password: root
+       # redis
+       redis:
+         database: 0
+         host: localhost
+         port: 6379
+         password:
+
+       security:
+         urlPrefix: "/api"
+         urlLogout: "/api/logout"
+
+# mybatis plus
+mybatis-plus:
+         mapper-locations: classpath*:com/springboot/security/mapper/xml/*.xml,classpath*:com/springboot/security/oauth2/mapper/xml/*.xml
+#logging:
+#  level:
+#    root: debug
+#    com.springboot.security: debug
+
+
 
 logging.level.org.springframework.security: DEBUG

@@ -18,36 +18,23 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
+/**
+ * 认证服务器
+ */
 @Configuration
-public class OAuth2ServerConfig {
+public class OAuth2AuthorizationServerConfig {
 
     private static final String DEMO_RESOURCE_ID = "order";
 
-    @Configuration
-    @EnableResourceServer
-    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-
-        @Override
-        public void configure(ResourceServerSecurityConfigurer resources) {
-            resources.resourceId(DEMO_RESOURCE_ID).stateless(true);
-        }
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http
-                .authorizeRequests()
-                    .antMatchers("/order/**").authenticated();//配置order访问控制，必须认证过后才可以访问
-
-        }
-    }
 
 
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-        @Autowired
-        AuthenticationManager authenticationManager;
+//        @Autowired
+//        AuthenticationManager authenticationManager;
+
         @Autowired
         RedisConnectionFactory redisConnectionFactory;
 
@@ -76,7 +63,7 @@ public class OAuth2ServerConfig {
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
             endpoints
                     .tokenStore(new RedisTokenStore(redisConnectionFactory))
-                    .authenticationManager(authenticationManager)
+//                    .authenticationManager(authenticationManager)
                     .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         }
 

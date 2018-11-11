@@ -1,5 +1,6 @@
 package com.springboot.security.oauth2;
 
+import com.springboot.security.SpringsecurityAuthApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,10 @@ public class Oauth2Application {
 
 	public static void main(String[] args) {
 		//未完善
-		SpringApplication.run(Oauth2Application.class, args);
+		Class [] classes = new Class[2];
+		classes[0]= SpringsecurityAuthApplication.class;
+		classes[1]= Oauth2Application.class;
+		SpringApplication.run(classes, args);
+
 	}
 }
