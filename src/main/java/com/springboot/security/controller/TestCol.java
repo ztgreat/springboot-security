@@ -1,10 +1,10 @@
 package com.springboot.security.controller;
 
 import com.springboot.security.base.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +21,20 @@ public class TestCol {
 		ResponseEntity<String> res = new ResponseEntity<String>();
 		res.setSuccess("拦截url 测试");
 		return res;
+	}
+
+	@GetMapping("/product/{id}")
+	@ResponseBody
+	public String getProduct(@PathVariable String id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return "product id : " + id;
+	}
+
+	@GetMapping("/order/{id}")
+	@ResponseBody
+	public String getOrder(@PathVariable String id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return "order id : " + id;
 	}
 
 }

@@ -3,9 +3,9 @@ package com.springboot.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -22,18 +22,16 @@ public class OAuth2AuthorizationServerConfig {
 
     private static final String DEMO_RESOURCE_ID = "order";
 
-
-
     @Configuration
     @EnableAuthorizationServer
-    @Order(99)
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
-
-//        @Autowired
-//        AuthenticationManager authenticationManager;
 
         @Autowired
         RedisConnectionFactory redisConnectionFactory;
+
+
+        @Autowired
+        AuthenticationManager authenticationManager;
 
 
         @Override
@@ -60,7 +58,7 @@ public class OAuth2AuthorizationServerConfig {
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
             endpoints
                     .tokenStore(new RedisTokenStore(redisConnectionFactory))
-//                    .authenticationManager(authenticationManager)
+                    .authenticationManager(authenticationManager)
                     .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         }
 

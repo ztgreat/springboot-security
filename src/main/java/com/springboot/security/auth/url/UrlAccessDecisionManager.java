@@ -6,6 +6,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,11 @@ import java.util.Iterator;
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication auth, Object o, Collection<ConfigAttribute> cas){
+
+        if(auth instanceof OAuth2Authentication){
+            return;
+        }
+
         Iterator<ConfigAttribute> iterator = cas.iterator();
         while (iterator.hasNext()) {
             ConfigAttribute ca = iterator.next();
