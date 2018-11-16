@@ -1,9 +1,9 @@
 package com.springboot.security.entity.ins;
 
 
-import com.springboot.security.base.Tree;
+import com.springboot.security.base.ResponseTree;
 
-public class PermissionTreeIns extends Tree<PermissionTreeIns> {
+public class PermissionTreeIns extends ResponseTree<PermissionTreeIns> {
 
 
 	

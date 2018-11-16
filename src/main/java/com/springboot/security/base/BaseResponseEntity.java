@@ -1,20 +1,24 @@
 package com.springboot.security.base;
 
 
-public abstract class BaseResponseEntity {
+import java.io.Serializable;
 
-	public BaseResponseEntity() {
-		this.code = CommonConstant.ZERO;
-	}
+public abstract class BaseResponseEntity implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 0：成功 1：失败
 	 */
-	private String code;
+	private String code= CommonConstant.ServerCode.SERVER_RET_SUSSCESS;
 	/**
 	 * 返回的消息
 	 */
 	private String msg;
+
+	public BaseResponseEntity() {
+		this.code = CommonConstant.ServerCode.SERVER_RET_SUSSCESS;
+	}
 
 	/**
 	 * 成功

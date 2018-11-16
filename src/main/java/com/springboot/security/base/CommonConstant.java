@@ -2,8 +2,6 @@ package com.springboot.security.base;
 
 /**
  * 常量类 common
- * 
- * @lichee
  */
 public class CommonConstant {
 

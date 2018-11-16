@@ -2,7 +2,9 @@ package com.springboot.security.base;
 
 import java.util.List;
 
-//后台实体列表返回
+/**
+ * 后台或者前台返回的统一对象
+ */
 public class ResponseList<T> extends BaseResponseEntity {
 
 	private Long count;
@@ -10,17 +12,16 @@ public class ResponseList<T> extends BaseResponseEntity {
 	private int size;
 
 	public ResponseList() {
-		super.setSuccess("");
 	}
 
 	public ResponseList(List<T> t, Long total) {
-		super.setSuccess("");
+		super.setSuccess();
 		this.setData(t);
 		this.setCount(total);
 	}
 
 	public ResponseList(List<T> t, Long total, int size) {
-		super.setSuccess("");
+		super.setSuccess();
 		this.setData(t);
 		this.setCount(total);
 		this.setSize(size);
