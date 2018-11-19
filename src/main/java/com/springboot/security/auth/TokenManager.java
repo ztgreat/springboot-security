@@ -20,7 +20,7 @@ public class TokenManager {
 	 * 获取当前登录的用户User对象
 	 * @return
 	 */
-	public static UserToken getToken(){
+	public static UserToken getToken() throws Exception{
 		UserToken token = (UserToken)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return token ;
 	}
@@ -29,14 +29,14 @@ public class TokenManager {
 	 * 获取当前用户NAME
 	 * @return
 	 */
-	public static String getNickname(){
+	public static String getNickname() throws Exception{
 		return getToken().getNickname();
 	}
 	/**
 	 * 获取当前用户ID
 	 * @return
 	 */
-	public static Integer getUserId(){
+	public static Integer getUserId() throws Exception{
 		return getToken()==null?null:getToken().getId();
 	}
 
