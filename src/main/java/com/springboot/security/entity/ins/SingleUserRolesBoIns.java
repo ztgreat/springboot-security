@@ -13,8 +13,8 @@ public class SingleUserRolesBoIns  implements Serializable {
 	private String roleName ;
 	
 	//同roleName
-	private String label;
-	
+	private String title;
+
 	
 	private String roleId;
 	
@@ -33,7 +33,7 @@ public class SingleUserRolesBoIns  implements Serializable {
 	}
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
-		setLabel(roleName);
+		setTitle(roleName);
 	}
 	public String getRoleId() {
 		return roleId;
@@ -49,12 +49,6 @@ public class SingleUserRolesBoIns  implements Serializable {
 	public void setAllocationFlag(String allocationFlag) {
 		this.allocationFlag = allocationFlag;
 	}
-	public String getLabel() {
-		return label;
-	}
-	public void setLabel(String label) {
-		this.label = label;
-	}
 	public String getKey() {
 		return key;
 	}
@@ -67,5 +61,12 @@ public class SingleUserRolesBoIns  implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

@@ -94,10 +94,7 @@ public class SysRoleCol {
 			res.setFailure(CommonConstant.Message.OPTION_FAILURE);
 		}
 		return res;
-
 	}
-	
-
 	@RequestMapping(value = "/query/{id}")
 	@ResponseBody
 	public ResponseEntity<SysRole> query(HttpServletRequest request, @PathVariable("id") Integer id) {
@@ -176,8 +173,7 @@ public class SysRoleCol {
 
 		ResponseList<SingleUserRolesBoIns> res=new ResponseList<SingleUserRolesBoIns>();
 		try {
-			List<SingleUserRolesBoIns> singleUserRoleAllocationBos = new ArrayList<SingleUserRolesBoIns>();
-			singleUserRoleAllocationBos = sysRoleService.queryRoleAllocationByUserId(userId);
+			List<SingleUserRolesBoIns> singleUserRoleAllocationBos = sysRoleService.queryRoleAllocationByUserId(userId);
 			res.setData(singleUserRoleAllocationBos);
 			} catch (RuntimeException e) {
 				res.setFailure(CommonConstant.Message.OPTION_FAILURE);
@@ -348,6 +344,4 @@ public class SysRoleCol {
 		}
 		return res;
 	}
-	
-	
 }
