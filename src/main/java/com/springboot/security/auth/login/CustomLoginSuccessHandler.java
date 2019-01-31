@@ -28,7 +28,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
          */
         response.setContentType("application/json;charset=utf-8");
         ResponseEntity<SysUserInfo>res= new ResponseEntity<>();
-        res.setSuccess("登录成功");
+        res.success("登录成功");
 
         UserToken token = null;
         try {
@@ -39,8 +39,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             LoggerUtils.error(getClass(),"获取登录用户信息失败:"+e.getMessage());
             e.printStackTrace();
         }
-
-
         ObjectMapper om = new ObjectMapper();
         PrintWriter out = response.getWriter();
         out.write(om.writeValueAsString(res));

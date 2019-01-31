@@ -24,17 +24,17 @@ public class CustomLgoinFailureHandler implements org.springframework.security.w
         ResponseEntity<String> res = new ResponseEntity<>();
         if (e instanceof BadCredentialsException ||
                 e instanceof UsernameNotFoundException) {
-            res.setFailure("账户名或者密码输入错误!");
+            res.failure("账户名或者密码输入错误!");
         } else if (e instanceof LockedException) {
-            res.setFailure("账户被锁定，请联系管理员!");
+            res.failure("账户被锁定，请联系管理员!");
         } else if (e instanceof CredentialsExpiredException) {
-            res.setFailure("密码过期，请联系管理员!");
+            res.failure("密码过期，请联系管理员!");
         } else if (e instanceof AccountExpiredException) {
-            res.setFailure("账户过期，请联系管理员!");
+            res.failure("账户过期，请联系管理员!");
         } else if (e instanceof DisabledException) {
-            res.setFailure("账户被禁用，请联系管理员!");
+            res.failure("账户被禁用，请联系管理员!");
         } else {
-            res.setFailure("登录失败!");
+            res.failure("登录失败!");
         }
         response.setStatus(401);
         ObjectMapper om = new ObjectMapper();

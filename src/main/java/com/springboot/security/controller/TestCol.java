@@ -19,7 +19,7 @@ public class TestCol {
 	@ResponseBody
 	public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
 		ResponseEntity<String> res = new ResponseEntity<String>();
-		res.setSuccess("拦截url 测试");
+		res.success("拦截url 测试");
 		return res;
 	}
 
